@@ -2,35 +2,33 @@
 
 ## Project #thewinnertakesitall: Ketimpangan Ekonomi di Balik Mimpi Kuliah
 
-Pada bagian ini, kamu perlu menuliskan latar belakang yang relevan dengan proyek yang diangkat.
+**Latar Belakang (Domain Proyek)**
+Belakangan ini, media sosial diramaikan dengan tren tagar _#thewinnertakesiitall_ yang diunggah oleh pelajar Indonesia. Dalam unggahan-unggahan tersebut, mereka menyampaikan harapan untuk dapat melanjutkan pendidikan ke jenjang perguruan tinggi. Namun, mereka juga mengungkapkan realitas pahit: keterbatasan ekonomi menjadi penghalang utama untuk mewujudkan impian tersebut.
 
-**Rubrik/Kriteria Tambahan (Opsional)**:
-- Jelaskan mengapa dan bagaimana masalah tersebut harus diselesaikan
-- Menyertakan hasil riset terkait atau referensi. Referensi yang diberikan harus berasal dari sumber yang kredibel dan author yang jelas.
-- Format Referensi dapat mengacu pada penulisan sitasi [IEEE](https://journals.ieeeauthorcenter.ieee.org/wp-content/uploads/sites/7/IEEE_Reference_Guide.pdf), [APA](https://www.mendeley.com/guides/apa-citation-guide/) atau secara umum seperti [di sini](https://penerbitdeepublish.com/menulis-buku-membuat-sitasi-dengan-mudah/)
-- Sumber yang bisa digunakan [Scholar](https://scholar.google.com/)
+Fenomena ini mencerminkan kondisi nyata yang terjadi di Indonesia, yakni kesenjangan ekonomi masih menjadi tantangan besar dalam pemerataan akses pendidikan. Pendidikan sendiri merupakan fondasi utama dalam pembangunan sumber daya manusia dan peningkatan kualitas hidup masyarakat. Data dari Badan Pusat Statistik (BPS) menunjukkan bahwa rata-rata lama sekolah di Indonesia hanya mencapai 9,08 tahun atau setara kelas 9 
+SMP/sederajat (2022), yang berarti belum mencapai jenjang SMA secara penuh (BPS, Statistik Pendidikan 2022). Status ekonomi rumah tangga menja merupakan salah satu faktor yang memiliki pengaruh terhadap tinggi rendahnya tingkat pendidikan. Selain itu, provinsi dengan tingkat kemiskinan dan pengeluaran per kapita yang rendah cenderung memiliki capaian pendidikan yang lebih rendah pula. Menurut UNESCO (2020), setiap tambahan satu tahun pendidikan dapat meningkatkan pendapatan individu sebesar 10%, yang menegaskan adanya hubungan erat antara pendidikan dan kesejahteraan ekonomi. Maka, ketimpangan dalam akses pendidikan berpotensi memperparah siklus kemiskinan antar generasi.
 
-## Business Understanding
+Untuk mengatasi masalah ini, dilakukan pendekatan analitik berbasis data menggunakan model klasifikasi machine learning. Dengan memanfaatkan data ekonomi regional, model ini diharapkan dapat memprediksi tingkat pencapaian pendidikan di berbagai wilayah. Hasil dari model ini tidak hanya memberikan pemetaan potensi pendidikan, tetapi juga menjadi dasar pengambilan keputusan dalam merancang intervensi kebijakan pendidikan yang lebih terarah dan berbasis data.
 
-Pada bagian ini, kamu perlu menjelaskan proses klarifikasi masalah.
+**Referensi**
+1. Badan Pusat Statistik. (2022). Statistik Pendidikan 2022. https://www.bps.go.id/id/publication/2022/11/25/a80bdf8c85bc28a4e6566661/statistik-pendidikan-2022.html
+2. UNESCO. (2020). Education transforms lives. https://en.unesco.org/themes/education
 
-Bagian laporan ini mencakup:
+# Business Understanding
+Pada tahap ini akan dilakukan identifikasi konteks permasalahan yang dihadapi dan tujuan bisnis, yang berfungsi untuk memastikan bahwa solusi yang dikembangkan nantinya benar-benar selaras dengan kebutuhan dan harapan pihak terkait.
 
 ### Problem Statements
 
 Menjelaskan pernyataan masalah latar belakang:
-- Pernyataan Masalah 1
-- Pernyataan Masalah 2
-- Pernyataan Masalah n
+- Bagaimana hubungan keterkaita antara kondisi ekonomi suatu daerah dengan tingkat pencapaian pendidikan masyarakatnya?
+- Variabel ekonomi apa saja yang paling berpengaruh dalam memengaruhi rata-rata lama sekolah di berbagai provinsi di Indonesia?
+- Bagaimana sebuah model klasifikasi dapat memprediksi tingkat pencapaian pendidikan berdasarkan indikator-indikator ekonomi daerah?
 
 ### Goals
-
 Menjelaskan tujuan dari pernyataan masalah:
-- Jawaban pernyataan masalah 1
-- Jawaban pernyataan masalah 2
-- Jawaban pernyataan masalah n
-
-Semua poin di atas harus diuraikan dengan jelas. Anda bebas menuliskan berapa pernyataan masalah dan juga goals yang diinginkan.
+- Menganalisis hubungan keterkaitan antara faktor-faktor ekonomi suatu daerah dengan tingkat pencapaian pendidikan masyarakatnya.
+- Membangun model machine learning untuk memprediksi kategori pencapaian pendidikan berdasarkan kondisi ekonomi suatu wilayah.
+- Memberikan gambaran prediktif sebagai bahan pertimbangan dalam menyusun kebijakan peningkatan akses pendidikan, terutama di wilayah dengan kondisi ekonomi kurang menguntungkan.
 
 **Rubrik/Kriteria Tambahan (Opsional)**:
 - Menambahkan bagian “Solution Statement” yang menguraikan cara untuk meraih goals. Bagian ini dibuat dengan ketentuan sebagai berikut: 
@@ -41,6 +39,16 @@ Semua poin di atas harus diuraikan dengan jelas. Anda bebas menuliskan berapa pe
 
 ## Data Understanding
 Paragraf awal bagian ini menjelaskan informasi mengenai data yang Anda gunakan dalam proyek. Sertakan juga sumber atau tautan untuk mengunduh dataset. Contoh: [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/Restaurant+%26+consumer+data).
+
+Untuk menjawab beberapa masalah yang telah dijabarkan sebelumnya, digunakan dataset yang berasal dari https://www.kaggle.com/datasets/dannytheodore/socio-economic-of-indonesia-in-2021/data dan bersumber dari data terbuka milik Badan Pusat Statistik (BPS). Dataset ini berisi data dari berbagai provinsi di Indonesia dengan beberapa variabel ekonomi dan sosial, di antaranya:
+- Provinsi
+- Persentase penduduk miskin,
+- Produk Domestik Regional Bruto (PDRB),
+- Angka Harapan Hidup (AHH),
+- Rata-rata lama sekolah,
+- Pengeluaran per kapita.
+
+Variabel-variabel tersebut kemudian dianalisis untuk membangun model klasifikasi yang dapat memprediksi tingkat pencapaian pendidikan (dalam hal ini diwakili oleh rata-rata lama sekolah) berdasarkan kondisi ekonomi suatu wilayah. Dengan pendekatan ini, diharapkan model dapat memberikan gambaran potensi pendidikan di suatu daerah, serta menjadi bahan pertimbangan dalam merancang kebijakan pemerataan pendidikan.
 
 Selanjutnya uraikanlah seluruh variabel atau fitur pada data. Sebagai contoh:  
 
