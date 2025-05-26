@@ -2,7 +2,35 @@
 
 ## Project #thewinnertakesitall: Ketimpangan Ekonomi di Balik Mimpi Kuliah
 
-Pada bagian ini, kamu perlu menuliskan latar belakang yang relevan dengan proyek yang diangkat.
+## Latar Belakang (Domain Proyek)
+
+Belakangan ini, media sosial diramaikan dengan tren tagar **#thewinnertakesiitall** yang diunggah oleh pelajar di Indonesia. Dalam unggahan-unggahan tersebut, mereka menyampaikan harapan besar untuk dapat melanjutkan pendidikan ke jenjang perguruan tinggi. Namun, mereka juga mengungkapkan realitas pahit: keterbatasan ekonomi menjadi penghalang utama untuk mewujudkan impian tersebut.
+
+Fenomena ini mencerminkan kondisi nyata di Indonesia, di mana kesenjangan ekonomi masih menjadi tantangan besar dalam pemerataan akses pendidikan. Pendidikan sendiri merupakan fondasi utama dalam pembangunan sumber daya manusia dan peningkatan kualitas hidup masyarakat.
+
+Data dari Badan Pusat Statistik (BPS) menunjukkan bahwa **rata-rata lama sekolah di Indonesia masih berada pada angka 9,08 atau setara kelas 9 SMP/Sederajat tahun 2022**, yang berarti belum mencapai jenjang SMA secara penuh. Status ekonomi rumah tangga merupakan salah satu faktor yang memiliki pengaruh terhadap tinggi rendahnya tingkat pendidikan. Selain itu, provinsi dengan **tingkat kemiskinan dan pengeluaran per kapita yang rendah** cenderung memiliki capaian pendidikan yang lebih rendah pula (BPS: Statistik Pendidikan, 2022).
+
+Menurut UNESCO (2020), **setiap tambahan satu tahun pendidikan dapat meningkatkan pendapatan individu sebesar 10%**, yang menegaskan adanya hubungan erat antara pendidikan dan kesejahteraan ekonomi. Maka, ketimpangan dalam akses pendidikan berpotensi memperparah siklus kemiskinan antar generasi.
+
+Untuk mengatasi masalah ini, dilakukan pendekatan analitik berbasis data menggunakan model klasifikasi machine learning. Dengan memanfaatkan data ekonomi regional, model ini diharapkan dapat memprediksi tingkat pencapaian pendidikan di berbagai wilayah. Hasil dari model ini tidak hanya memberikan pemetaan potensi pendidikan, tetapi juga menjadi dasar pengambilan keputusan dalam merancang intervensi kebijakan pendidikan yang lebih terarah dan berbasis data.
+
+Untuk menjawab isu tersebut, digunakan dataset yang berasal dari Kaggle dan bersumber dari data terbuka milik Badan Pusat Statistik (BPS). Dataset ini berisi data dari berbagai provinsi di Indonesia dengan beberapa variabel ekonomi dan sosial, di antaranya:
+
+* Persentase penduduk miskin,
+* Produk Domestik Regional Bruto (PDRB),
+* Angka Harapan Hidup (AHH),
+* Rata-rata lama sekolah,
+* Pengeluaran per kapita.
+
+Variabel-variabel tersebut kemudian dianalisis untuk membangun model klasifikasi yang dapat memprediksi tingkat pencapaian pendidikan (dalam hal ini diwakili oleh rata-rata lama sekolah) berdasarkan kondisi ekonomi suatu wilayah. Dengan pendekatan ini, diharapkan model dapat memberikan gambaran potensi pendidikan di suatu daerah, serta menjadi bahan pertimbangan dalam merancang kebijakan pemerataan pendidikan.
+
+## Referensi
+
+1. Badan Pusat Statistik. (2022). *Statistik Pendidikan 2022*.
+   [https://www.bps.go.id/id/publication/2022/11/25/xyz/statistik-pendidikan-2022.html](https://www.bps.go.id/id/publication/2022/11/25/xyz/statistik-pendidikan-2022.html)
+
+2. UNESCO. (2020). *Education Transforms Lives*.
+   [https://en.unesco.org/themes/education](https://en.unesco.org/themes/education)
 
 **Rubrik/Kriteria Tambahan (Opsional)**:
 - Jelaskan mengapa dan bagaimana masalah tersebut harus diselesaikan
