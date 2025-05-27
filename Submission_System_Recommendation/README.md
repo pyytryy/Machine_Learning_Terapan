@@ -29,25 +29,45 @@ Namun, tidak semua sistem rekomendasi membutuhkan data pengguna yang kompleks. D
 - Mengevaluasi kualitas hasil rekomendasi secara kualitatif (relevansi lagu) dan kuantitatif (jika memungkinkan, menggunakan metrik seperti cosine similarity score atau uji coba user).
 
 ## Data Understanding
-Dataset yang digunakan pada proyek ini berasal dari dataset pada Kaggle dengan nama [Spotify Tracks DB](https://www.kaggle.com/datasets/zaheenhamidani/ultimate-spotify-tracks-db).
-
-Dataset ini berisi kumpulan informasi mengenai lagu-lagu populer yang dapat digunakan untuk membangun sistem rekomendasi musik. 
+Dataset yang digunakan pada proyek ini berasal dari dataset pada Kaggle dengan nama [Spotify Tracks DB](https://www.kaggle.com/datasets/zaheenhamidani/ultimate-spotify-tracks-db) milik Zaheen Hamidani. Dataset ini berisi kumpulan informasi mengenai lagu-lagu populer yang dapat digunakan untuk membangun sistem rekomendasi musik. 
 Masing-masing entri dalam dataset mewakili satu lagu dengan beberapa fitur numerik dan kategorikal yang mendeskripsikan karakteristik lagu tersebut.
 
 **Berikut adalah penjelasan masing-masing fitur dalam dataset:**
-- genre: Kategori genre lagu, berguna untuk segmentasi preferensi musik pengguna (tipe data kategori).
-- artist_name: Nama artis/band yang membawakan lagu tersebut (tipe data kategori).
-- track_name: Judul lagu (tipe data kategori).
-- track_id: ID unik dari lagu, sebagai pengenal dalam sistem (tipe data kategori).
-- popularity: Angka Harapan Hidup (AHH) dalam tahun.
-- avg_schooltime: Rata-rata lama sekolah (dalam tahun), mencerminkan capaian pendidikan.
-- exp_percap: Pengeluaran per kapita, yaitu rata-rata pengeluaran individu di wilayah tersebut (dalam ribuan rupiah).
+**Berikut adalah penjelasan masing-masing fitur dalam dataset:**
+- `genre`: Kategori genre lagu, berguna untuk segmentasi preferensi musik pengguna (tipe data kategori).
+- `artist_name`: Nama artis/band yang membawakan lagu tersebut (tipe data kategori).
+- `track_name`: Judul lagu (tipe data kategori).
+- `track_id`: ID unik dari lagu, sebagai pengenal dalam sistem (tipe data kategori).
+- `popularity`: Skor popularitas lagu berdasarkan jumlah pemutaran atau eksposur di platform digital (tipe data numerik).
+- `acousticness`: Nilai lebih tinggi maka lagu lebih akustik (tipe data numerik).
+- `danceability`: Menggambarkan seberapa cocok lagu untuk menari, berdasarkan tempo, irama, dan kestabilan beat (tipe data numerik).
+- `duration_ms`: 	Durasi lagu dalam milidetik (tipe data numerik).
+- `energy`: Lagu dengan nilai tinggi biasanya cepat dan keras (tipe data numerik).
+- `instrumentalness`: Nilai mendekati 1 menunjukkan lagu sangat instrumental (tipe data numerik).
+- `key`: Menunjukkan tangga nada dasar lagu (tipe data kategori).
+- `liveness`: Mengindikasikan kemungkinan lagu direkam live (tipe data numerik).
+- `loudness`: Tingkat kekerasan lagu (dalam dB). Bisa berpengaruh ke energi atau mood (tipe data numerik).
+- `mode`: Mayor/minor (biasanya 1 = mayor, 0 = minor) (tipe data kategori).
+- `speechiness`: Mengukur seberapa banyak elemen vokal/spoken. Mebedakan lagu instrumental vs lagu rap (tipe data numerik).
+- `tempo`: Kecepatan lagu dalam BPM. Berpengaruh pada gaya musik dan mood (tipe data numerik).
+- `time_signature`: Menunjukkan struktur ketukan lagu (umumnya 4/4) (tipe data kategori).
+- `valence`: Mengukur kebahagiaan/mood lagu (0 = sedih, 1 = bahagia) (tipe data numerik).
+- 
+Variabel-variabel tersebut kemudian dianalisis untuk membangun model sistem rekomendasi yang dapat menyarankan lagu-lagu lain berdasarkan kemiripan karakteristik audio dari lagu yang disukai pengguna. Dalam hal ini, sistem menggunakan pendekatan content-based filtering, yang mengandalkan fitur seperti tempo, energi, danceability, valence, dan lain-lain untuk menghitung kemiripan antar lagu.
 
-Variabel-variabel tersebut kemudian dianalisis untuk membangun model clustering yang dapat memprediksi tingkat pencapaian pendidikan (dalam hal ini diwakili oleh rata-rata lama sekolah) berdasarkan kondisi ekonomi suatu wilayah. Namun sebelum itu, untuk menambah wawasan awal tentang data dan membantu pengambilan keputusan analisis selanjutnya akan dilakukan exploratory data analysis.
+_Namun sebelum itu, untuk menambah wawasan awal tentang data dan membantu pengambilan keputusan analisis selanjutnya akan dilakukan exploratory data analysis._
+
+✨ Saran Penggunaan dalam Model:
+✅ Gunakan untuk menghitung similarity:
+acousticness, danceability, energy, instrumentalness, speechiness, valence, tempo, liveness, loudness
+
+⚠️ Opsional / Boleh Digunakan jika Relevan:
+popularity, duration_ms, mode, key (kalau dikodekan), time_signature
+
+❌ Abaikan dari input fitur numerik (tapi tetap disimpan sebagai info):
+track_id, track_name, artist_name
 
 ---
-**Rubrik/Kriteria Tambahan (Opsional)**:
-- Melakukan beberapa tahapan yang diperlukan untuk memahami data, contohnya teknik visualisasi data beserta insight atau exploratory data analysis.
 
 ## Data Preparation
 Pada bagian ini Anda menerapkan dan menyebutkan teknik data preparation yang dilakukan. Teknik yang digunakan pada notebook dan laporan harus berurutan.
