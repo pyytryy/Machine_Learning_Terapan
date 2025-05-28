@@ -351,11 +351,13 @@ Saat mencari sebuah lagu, agar sistem akan merekomendasikan lagu-lagu lain yang 
 
   ![image](https://github.com/user-attachments/assets/8b046a7a-9e0c-41ee-aaae-2aa7bd2faefb)
 
-**Salah satu interpretasi dari grafik diatas:**
+  **Salah satu interpretasi dari grafik diatas:**
+  
+  Rekomendasi "Life Is Short" cukup mirip dengan lagu How to Be Married karena memiliki kesamaan pada aspek instrumental, keras suara, dan unsur bicara, meskipun sedikit berbeda dalam tempo dan suasana emosional (valence).
 
-Rekomendasi "Life Is Short" cukup mirip dengan lagu How to Be Married karena memiliki kesamaan pada aspek instrumental, keras suara, dan unsur bicara, meskipun sedikit berbeda dalam tempo dan suasana emosional (valence).
-
+---
 - Menggunakan MAE
+  
   **Mean Absolute Error (MAE)** adalah metrik evaluasi yang digunakan untuk mengukur seberapa mirip dua buah entitas berdasarkan fitur numerik mereka. Dalam konteks **sistem rekomendasi musik**, MAE digunakan untuk menghitung rata-rata selisih absolut antara nilai fitur lagu input dan lagu yang direkomendasikan. Fitur-fitur ini bisa berupa:
 
 Rumus MAE:
@@ -399,12 +401,15 @@ Sistem rekomendasi lagu berbasis konten (Content-Based Filtering) yang telah dib
 
 Dengan metode ini, pengguna bisa mendapatkan saran lagu yang memiliki karakteristik musik serupa dengan yang mereka sukai, sekaligus memperluas eksplorasi musik ke artis atau lagu yang sebelumnya belum dikenal.
 
+
 ## **Referensi**
 
-[1] Kompas.com, "Jumlah pengguna Spotify tumbuh pada 2023, tembus 600 juta," Kompas Tekno, Feb. 12, 2024. [Online]. Available: https://tekno.kompas.com/read/2024/02/12/11030007/jumlah-pengguna-spotify-tumbuh-pada-2023-tembus-600-juta.
+[1]: Kompas.com, "Jumlah pengguna Spotify tumbuh pada 2023, tembus 600 juta," Kompas Tekno, Feb. 12, 2024. [Online]. Available: https://tekno.kompas.com/read/2024/02/12/11030007/jumlah-pengguna-spotify-tumbuh-pada-2023-tembus-600-juta.
 
-[2] S. Bangera, V. Nagaonkar, A. Tiwari, S. Ansari, and K. Talekar, "Spotify recommendation system," Int. Res. J. Mod. Eng. Technol. Sci., vol. 6, no. 2, Feb. 2024. [Online]. Available: https://www.researchgate.net/publication/381853790_SPOTIFY_RECOMMENDATION_SYSTEM.
+[2]: S. Bangera, V. Nagaonkar, A. Tiwari, S. Ansari, and K. Talekar, "Spotify recommendation system," Int. Res. J. Mod. Eng. Technol. Sci., vol. 6, no. 2, Feb. 2024. [Online]. Available: https://www.researchgate.net/publication/381853790_SPOTIFY_RECOMMENDATION_SYSTEM.
 
-[^1] Kompas.com, "Jumlah pengguna Spotify tumbuh pada 2023, tembus 600 juta," Kompas Tekno, Feb. 12, 2024. [Online]. Available: https://tekno.kompas.com/read/2024/02/12/11030007/jumlah-pengguna-spotify-tumbuh-pada-2023-tembus-600-juta.
-[^2] S. Bangera, V. Nagaonkar, A. Tiwari, S. Ansari, and K. Talekar, "Spotify recommendation system," Int. Res. J. Mod. Eng. Technol. Sci., vol. 6, no. 2, Feb. 2024. [Online]. Available: https://www.researchgate.net/publication/381853790_SPOTIFY_RECOMMENDATION_SYSTEM.
+[^1]: Kompas.com, "Jumlah pengguna Spotify tumbuh pada 2023, tembus 600 juta," Kompas Tekno, Feb. 12, 2024. [Online]. Available: https://tekno.kompas.com/read/2024/02/12/11030007/jumlah-pengguna-spotify-tumbuh-pada-2023-tembus-600-juta.
+[^2]: S. Bangera, V. Nagaonkar, A. Tiwari, S. Ansari, and K. Talekar, "Spotify recommendation system," Int. Res. J. Mod. Eng. Technol. Sci., vol. 6, no. 2, Feb. 2024. [Online]. Available: https://www.researchgate.net/publication/381853790_SPOTIFY_RECOMMENDATION_SYSTEM.
+
+
 
