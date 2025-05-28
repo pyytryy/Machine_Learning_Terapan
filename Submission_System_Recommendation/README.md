@@ -1,6 +1,6 @@
 # Laporan Proyek Machine Learning - Putri Pita Mutia
 
-## Temukan Lagu Mirip Favoritmu: Rekomendasi Musik Berdasarkan Fitur Akustik dan Genre**
+## Temukan Lagu Mirip Favoritmu: Rekomendasi Musik Berdasarkan Fitur Akustik dan Genre
 
 **Latar Belakang (Domain Proyek)**
 Musik merupakan bagian penting dalam kehidupan manusia sehari-hari. Di era digital, jutaan lagu kini tersedia secara daring melalui berbagai platform seperti Spotify, Apple Music, dan YouTube Music. Namun, ketersediaan lagu dalam jumlah sangat besar ini justru menimbulkan tantangan baru: pengguna sering kali kesulitan menemukan musik yang sesuai dengan preferensi mereka. Oleh karena itu, dibutuhkan sebuah sistem yang mampu membantu pengguna menemukan lagu yang relevan secara otomatis.
