@@ -3,6 +3,7 @@
 ## Project #thewinnertakesitall: Ketimpangan Ekonomi di Balik Mimpi Kuliah
 
 **Latar Belakang (Domain Proyek)**
+
 Belakangan ini, media sosial diramaikan dengan tren tagar _#thewinnertakesiitall_ yang diunggah oleh pelajar Indonesia. Dalam unggahan-unggahan tersebut, mereka menyampaikan harapan untuk dapat melanjutkan pendidikan ke jenjang perguruan tinggi. Namun, mereka juga mengungkapkan realitas pahit: keterbatasan ekonomi menjadi penghalang utama untuk mewujudkan impian tersebut.
 
 Fenomena ini mencerminkan kondisi nyata yang terjadi di Indonesia, yakni kesenjangan ekonomi masih menjadi tantangan besar dalam pemerataan akses pendidikan. Pendidikan sendiri merupakan fondasi utama dalam pembangunan sumber daya manusia dan peningkatan kualitas hidup masyarakat. Data dari Badan Pusat Statistik (BPS) menunjukkan bahwa rata-rata lama sekolah di Indonesia hanya mencapai 9,08 tahun atau setara kelas 9 
@@ -36,13 +37,13 @@ Menjelaskan tujuan dari pernyataan masalah:
 Dataset yang digunakan pada proyek ini berasal dari dataset pada Kaggle dengan nama [Socio-Economic of Indonesia in 2021](https://www.kaggle.com/datasets/dannytheodore/socio-economic-of-indonesia-in-2021/data) dan bersumber dari data terbuka milik Badan Pusat Statistik (BPS). 
 
 **Dataset ini berisi data dari berbagai provinsi di Indonesia dengan beberapa variabel ekonomi dan sosial, di antaranya:**
-- province: Nama provinsi di Indonesia (tipe data kategori).
-- cities_reg: Nama kabupaten/kota yang termasuk dalam provinsi tersebut (tipe data kategori).
-- poorpeople_percentage: Persentase penduduk miskin di wilayah tersebut (dalam persentase).
-- reg_gdp: Produk Domestik Regional Bruto (PDRB) dalam satuan miliar rupiah
-- life_exp: Angka Harapan Hidup (AHH) dalam tahun.
-- avg_schooltime: Rata-rata lama sekolah (dalam tahun), mencerminkan capaian pendidikan.
-- exp_percap: Pengeluaran per kapita, yaitu rata-rata pengeluaran individu di wilayah tersebut (dalam ribuan rupiah).
+- `province`: Nama provinsi di Indonesia (tipe data kategori).
+- `cities_reg`: Nama kabupaten/kota yang termasuk dalam provinsi tersebut (tipe data kategori).
+- `poorpeople_percentage`: Persentase penduduk miskin di wilayah tersebut (dalam persentase).
+- `reg_gdp`: Produk Domestik Regional Bruto (PDRB) dalam satuan miliar rupiah
+- `life_exp`: Angka Harapan Hidup (AHH) dalam tahun.
+- `avg_schooltime`: Rata-rata lama sekolah (dalam tahun), mencerminkan capaian pendidikan.
+- `exp_percap`: Pengeluaran per kapita, yaitu rata-rata pengeluaran individu di wilayah tersebut (dalam ribuan rupiah).
 
 Variabel-variabel tersebut kemudian dianalisis untuk membangun model clustering yang dapat memprediksi tingkat pencapaian pendidikan (dalam hal ini diwakili oleh rata-rata lama sekolah) berdasarkan kondisi ekonomi suatu wilayah. Namun sebelum itu, untuk menambah wawasan awal tentang data dan membantu pengambilan keputusan analisis selanjutnya akan dilakukan exploratory data analysis.
 
@@ -78,6 +79,7 @@ Exploratory Data Analysis (EDA) atau Analisis Data Eksploratif adalah tahap awal
   ```
 
   **Insight:**
+  
   Diperoleh bahwa dataset `df` merupakan dataset yang berisikan 514 baris dengan 7 fitur (5 fitur numerik dan 2 fitur object)
 
   
@@ -88,19 +90,23 @@ Exploratory Data Analysis (EDA) atau Analisis Data Eksploratif adalah tahap awal
   ```
   
   Diperoleh output sebagai berikut:
+  
   ```python
     np.int64(0)
   ```
 
   **Insight:**
+  
   Diperoleh bahwa dataset `df` merupakan dataset yang tidak memiliki data yang duplikat.
   
   Selanjutnya akan diperiksa data missing value dengan code:
+ 
   ```python
       df.isnull().sum()
   ```
 
   Diperoleh output sebagai berikut:
+ 
   ```python
                             0
       province	            0
@@ -114,14 +120,17 @@ Exploratory Data Analysis (EDA) atau Analisis Data Eksploratif adalah tahap awal
       dtype: int64
   ```
   **Insight:**
-    Diperoleh bahwa dataset `df` merupakan dataset yang tidak memiliki missing value.
+    
+   Diperoleh bahwa dataset `df` merupakan dataset yang tidak memiliki missing value.
 
   Selanjutnya akan diperiksa distribusi data dengan code:
+  
   ```python
       df.describe()
   ```
 
   Diperoleh output sebagai berikut:
+  
   ```python
           poorpeople_percentage	reg_gdp	life_exp	avg_schooltime	exp_percap
           count	514.000000	514.000000	514.000000	514.000000	514.000000
@@ -135,6 +144,7 @@ Exploratory Data Analysis (EDA) atau Analisis Data Eksploratif adalah tahap awal
   ```
     
   **Insight:**
+  
    - `poorpeople_percentage` (Persentase Penduduk Miskin)
       - **Rata-rata**: 12.27%
       - **Minimum**: 2.38%, **Maksimum**: 41.66%
@@ -161,6 +171,7 @@ Exploratory Data Analysis (EDA) atau Analisis Data Eksploratif adalah tahap awal
       - Terdapat perbedaan signifikan daya beli antar daerah.
 
 **Kesimpulan Awal**:
+
   1. Terdapat **ketimpangan antar daerah** dalam hal ekonomi dan pendidikan.
   2. Fitur-fitur seperti `reg_gdp`, `exp_percap`, dan `poorpeople_percentage` menunjukkan **distribusi yang sangat lebar** dan memerlukan teknik preprocessing khusus (log transform, scaling).
 
@@ -169,6 +180,7 @@ Exploratory Data Analysis (EDA) atau Analisis Data Eksploratif adalah tahap awal
 2. Visualisasikan Dataset
    
   - Heatmap untuk melihat korelasi antar fitur
+    
      ```python
         plt.figure(figsize=(12, 10))
         correlation_matrix = df.select_dtypes(include=[np.number]).corr()
@@ -181,12 +193,14 @@ Exploratory Data Analysis (EDA) atau Analisis Data Eksploratif adalah tahap awal
      ![image](https://github.com/user-attachments/assets/75c60d05-2d8f-4305-85b8-f32ed61c55c4)
 
      **Insight:**
+    
        - Rata-rata lama sekolah berkorelasi **positif** dengan pengeluaran per kapita (0.67) dan angka harapan hidup (0.41). Semakin tinggi rata-rata lama sekolah di suatu wilayah, maka akan semakin tinggi pengeluaran per kapita dan angka harapan hidup. Ini menunjukkan bahwa pendidikan berpotensi menjadi indikator umum kualitas hidup dan daya beli masyarakat.
        - Persentase penduduk miskin berkorelasi **negatif** dengan rata-rata lama sekolah (-0.54), angka harapan hidup (-0.54), dan pengeluaran per kapita (-0.64). Di wilayah dengan pendidikan lebih tinggi, angka kemiskinan cenderung lebih rendah, dan kualitas hidup lebih baik.
        - Pengeluaran per kapita berkorelasi **positif** dengan angka harapan hidup (0.57) dan dengan PDRB (Produk Domestik Regional Bruto) dalam miliar rupiah (0.33). Pengeluaran per kapita berpotensi menjadi indikator umum kesejahteraan ekonomi, berkaitan erat dengan PDRB dan harapan hidup.
 ---
 
   - Barplot untuk memudahkan melihat wilayah dengan rata-rata pendidikan tertinggi dan terendah
+    
    ```python
         avg_school_by_prov = df.groupby('province')['avg_schooltime'].mean().sort_values()
         lowest = avg_school_by_prov.head(5)
@@ -195,8 +209,8 @@ Exploratory Data Analysis (EDA) atau Analisis Data Eksploratif adalah tahap awal
         combined = pd.concat([lowest, highest])
         
         colors = ['gray'] * len(combined)
-        colors[0] = 'darkred'      # paling rendah
-        colors[-1] = 'darkgreen'   # paling tinggi
+        colors[0] = 'darkred'    
+        colors[-1] = 'darkgreen' 
         
         plt.figure(figsize=(10,6))
         sns.barplot(x=combined.values, y=combined.index, palette=colors)
@@ -212,11 +226,13 @@ Exploratory Data Analysis (EDA) atau Analisis Data Eksploratif adalah tahap awal
    ![image](https://github.com/user-attachments/assets/577cfe9f-82f6-4593-8b7a-425ac51f6525)
 
    **Insight:**
+   
    - Diperoleh 5 provinsi dengan Rata-rata Lama Sekolah tertinggi yakni DKI Jakarta, DI Yogyakarta, Aceh, Kalimantan Timur dan Maluku.
    - Diperoleh 5 provinsi dengan Rata-rata Lama Sekolah terendah yakni Papua, Kalimantan Barat, Nusa Tenggara Timur, Papua Barat, dan Gorontalo.
  
 ---
   - Histogram untuk melihat distribusi data normal atau tidak
+
     ```python
     for feature in num_features:
     plt.figure(figsize=(5, 3))
