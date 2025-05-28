@@ -95,13 +95,32 @@ Exploratory Data Analysis (EDA) atau Analisis Data Eksploratif adalah tahap awal
   **Insight:**
   Diperoleh bahwa dataset `df` merupakan dataset yang tidak memiliki data yang duplikat.
   
-
   Selanjutnya akan diperiksa data missing value dengan code:
-  
+  ```python
+      df.isnull().sum()
+  ```
+
+  Diperoleh output sebagai berikut:
+  ```python
+                            0
+      province	            0
+      cities_reg	          0
+      poorpeople_percentage	0
+      reg_gdp	              0
+      life_exp	            0
+      avg_schooltime	      0
+      exp_percap	          0
+      
+      dtype: int64
+  ```
+  **Insight:**
+    Diperoleh bahwa dataset `df` merupakan dataset yang tidak memiliki missing value.
+
+  Selanjutnya akan diperiksa distribusi data dengan code:
   ```python
       df.describe()
   ```
-    
+
   Diperoleh output sebagai berikut:
   ```python
           poorpeople_percentage	reg_gdp	life_exp	avg_schooltime	exp_percap
@@ -125,24 +144,21 @@ Exploratory Data Analysis (EDA) atau Analisis Data Eksploratif adalah tahap awal
       - **Rata-rata**: 34.80 miliar
       - **Minimum**: 1.04 miliar, **Maksimum**: 819 miliar
       - **Sebaran (std)**: 84.16
-      - *Tingkat ketimpangan sangat tinggi. 75% wilayah memiliki PDRB <28.85 miliar.*
-
+      - Tingkat ketimpangan sangat tinggi. 75% wilayah memiliki PDRB <28.85 miliar.
     - `life_exp` (Angka Harapan Hidup)
       - **Rata-rata**: 69.62 tahun
       - **Minimum**: 55.37 tahun, **Maksimum**: 77.86 tahun
       - **Sebaran (std)**: 3.46
-      - *Sebagian besar wilayah memiliki AHH yang relatif homogen antara 67–72 tahun.*
-
+      - Sebagian besar wilayah memiliki AHH yang relatif homogen antara 67–72 tahun.
     - `avg_schooltime` (Rata-rata Lama Sekolah)
       - **Rata-rata**: 8.44 tahun (setara SMP kelas 2)
       - **Minimum**: 1.42 tahun, **Maksimum**: 12.83 tahun
-      - *Terdapat ketimpangan, namun mayoritas wilayah berada di kisaran 7.5 – 9.3 tahun.*
-
+      - Terdapat ketimpangan, namun mayoritas wilayah berada di kisaran 7.5 – 9.3 tahun.
    - `exp_percap` (Pengeluaran Per Kapita / Tahun)
       - **Rata-rata**: Rp10.324.788 (~Rp860.000/bulan)
       - **Minimum**: Rp3.976.000, **Maksimum**: Rp23.888.000
       - **Sebaran (std)**: Rp2.717.000
-      - *Terdapat perbedaan signifikan daya beli antar daerah.*
+      - Terdapat perbedaan signifikan daya beli antar daerah.
 
 **Kesimpulan Awal**:
   1. Terdapat **ketimpangan antar daerah** dalam hal ekonomi dan pendidikan.
@@ -221,7 +237,19 @@ Exploratory Data Analysis (EDA) atau Analisis Data Eksploratif adalah tahap awal
    - exp_percap (Pengeluaran Per Kapita): distribusi: **Right-skewed** (banyak nilai ekstrem tinggi)
 
 ---
+  - Barplot untuk melihat data yang outlier
+    ```python
+     for feature in num_features:
+    plt.figure(figsize=(5, 3))
+    sns.boxplot(x=df[feature])
+    plt.title(f'Box Plot of {feature}')
+    plt.show()
+     ```
+    **Insight**
+    Pada beberapa fitur terdapat banyak outlier sehingga perlu penanganan
 
+---
+    
   - Scatter Plot digunakan untuk mengidentifaksi korelasi antara 2 fitur.
 
      ```python
@@ -244,22 +272,21 @@ Exploratory Data Analysis (EDA) atau Analisis Data Eksploratif adalah tahap awal
    
 ## Data Preparation
 
-Berdasarkan hasil EDA diketahui bahwa dataset yang digunakan tidak terdapat missing value, duplikat data sehingga tidak perlu ditangani, namun terdapat data yang outlier sehingga yang ditangani hanya dari sisi outlier, karena clustering dengan metode K-Means sangat sensitif dengan outlier sehingga perlu ditangani lebih lanjut
+Pada bagian ini akan dibagi menjadi 2 bagian, yakni data preparation untuk clustering & data preparation untuk klasifikasi. 
+
+### Data Preparation Untuk Clustering
+
+Berdasarkan hasil EDA diketahui bahwa dataset yang digunakan tidak terdapat missing value, duplikat data sehingga tidak perlu ditangani, namun terdapat data yang outlier sehingga yang ditangani hanya dari sisi outlier, karena clustering dengan metode K-Means sangat sensitif dengan outlier sehingga perlu ditangani lebih lanjut. 
 
 - Penanganan Outlier
   Pada tahapan ini akan dilakukan penanganan outlier dengan menggunakan RobustScaler dikarenakan dataset terlihat skewed. RobustScaler bekerja dengan median dan IQR (interquartile range) daripada mean dan standar deviasi sehingga cocok untuk data yang memiliki nilai ekstrim (outlier)
 - Dataset dengan Fitur Terpilih
-    1.  Dataset awal yang disalin = `df_scaled`, dilakukan salinan dari dataset awal agar mencegah terjadinya pencampuran dalam     dataset
-    2.  Dataset baru dengan fitur terpilih = `df_fitur`, yang berisikan `reg_gdp`, `exp_percap`, `poorpeople_percentage`, `life_exp` dan `avg_schooltime`. Fitur `provinci` dan `cities_reg` tidak digunakan karena hanya menandakan tempat dan tidak berpengeruh begitu besar pada bagian clustering. Tujuan dari model ini adalah memahami hubungan antara kondisi ekonomi dan pencapaian pendidikan berdasarkan indikator numerik. Informasi geografis tetap disimpan secara terpisah untuk keperluan interpretasi hasil clustering dan klasifikasi.
+  - Dataset awal yang disalin = `df_scaled`, dilakukan salinan dari dataset awal agar mencegah terjadinya pencampuran dalam     dataset
+  - Dataset baru dengan fitur terpilih = `df_fitur`, yang berisikan `reg_gdp`, `exp_percap`, `poorpeople_percentage`, `life_exp` dan `avg_schooltime`. Fitur `provinci` dan `cities_reg` tidak digunakan karena hanya menandakan tempat dan tidak berpengeruh begitu besar pada bagian clustering. Tujuan dari model ini adalah memahami hubungan antara kondisi ekonomi dan pencapaian pendidikan berdasarkan indikator numerik. Informasi geografis tetap disimpan secara terpisah untuk keperluan interpretasi hasil clustering dan klasifikasi.
 
+### Data Preparation Untuk Klasifikasi
 
-## Modeling
-Pada tahapan modeling, model yang dibangun dalam proyek ini termasuk dalam kategori unsupervised learning, dengan pendekatan clustering menggunakan algoritma KMeans. Tujuannya adalah untuk mengelompokkan data ke dalam beberapa klaster berdasarkan kemiripan fitur, tanpa menggunakan label atau target tertentu seperti pada klasifikasi.
-
-Sebagai langkah lanjutan, hasil clustering tersebut digunakan sebagai label baru untuk membangun model klasifikasi. Model klasifikasi ini bertujuan untuk memprediksi klaster dari data baru yang masuk di masa mendatang. Dengan demikian, sistem tidak hanya mampu mengelompokkan data historis, tetapi juga dapat melakukan prediksi secara otomatis terhadap data yang belum pernah dilihat sebelumnya.
-
-
-### 1. Clutering (KMeans)
+Pada bagian ini akan dilakukan pendekatan clustering menggunakan algoritma KMeans. Tujuannya adalah untuk mengelompokkan data ke dalam beberapa klaster berdasarkan kemiripan fitur, tanpa menggunakan label atau target tertentu seperti pada klasifikasi. Sebagai langkah lanjutan, hasil clustering tersebut digunakan sebagai label baru untuk membangun model klasifikasi. Model klasifikasi ini bertujuan untuk memprediksi klaster dari data baru yang masuk di masa mendatang. Dengan demikian, sistem tidak hanya mampu mengelompokkan data historis, tetapi juga dapat melakukan prediksi secara otomatis terhadap data yang belum pernah dilihat sebelumnya.
 
 Untuk mengelompokkan wilayah berdasarkan kondisi ekonomi yang serupa, digunakan metode KMeans Clustering. Proses ini diawali dengan evaluasi model menggunakan metode Elbow, Silhouette Score, dan PCA untuk memahami struktur data. Setelah nilai K ditentukan, hasil clustering divisualisasikan dan dianalisis secara mendalam melalui barplot dan proyeksi PCA. Selanjutnya, hasil klaster digunakan sebagai label baru dalam tahap klasifikasi, dengan pemisahan fitur dan target yang disesuaikan untuk membangun model prediktif terhadap data baru.
 
@@ -306,10 +333,13 @@ a. Model Kmeans
 Dapat dilihat pada nilai silhouette score dari tiap cluster setelah dilakukan proses PCA, nilai yang diperoleh mengalami kenaikan yakni pada nilai `K=3` memiliki nilai silhoutte score menyentung 0.70. Maka nilai `K=3` akan dipilih sebagai nilai k optimal untuk clustering.
 
 - Penetapan jumlah optimal clustering yakni`K=3`
+  
 - Visualisasi hasil clustering
+
   Setelah model clustering dilatih dan jumlah cluster optimal ditentukan, langkah selanjutnya adalah menampilkan hasil clustering melalui visualisasi. Visualisasi dilakukan dengan dua metode yakni barplot dan PCA
    
    - Barplot
+   
    Barplot untuk menampilkan perbandingan jumlah data pada setiap cluster
 
    ![image](https://github.com/user-attachments/assets/92440447-0c9b-44e5-8ae4-44d561b1510e)
@@ -326,7 +356,9 @@ Dapat dilihat pada nilai silhouette score dari tiap cluster setelah dilakukan pr
   Diperoleh bahwa setelah dilakukan clustering terlihat bahwa cluster 0 memiliki data yang lebih banyak dibandingkan cluster 1 & 2, pada cluster 1 memiliki data yang lebih sedikit dibandingkan cluster 2
 
   - Ruang PCA (2D PCA Projection)
-
+ 
+    Ruang PCA (2D PCA Projection), karena jumlah fitur yang digunakan lebih dari dua, sehingga diperlukan reduksi dimensi agar data dapat divisualisasikan secara dua dimensi dengan tetap mempertahankan informasi utama dari data.
+    
    ![image](https://github.com/user-attachments/assets/5c7d26aa-aec1-4876-8302-f99bc476d6eb)
 
     **Insight**
@@ -334,28 +366,91 @@ Dapat dilihat pada nilai silhouette score dari tiap cluster setelah dilakukan pr
    Visualisasi PCA menunjukkan bahwa data terbagi ke dalam tiga klaster yang cukup terpisah. Klaster 1 (warna jingga) terlihat memiliki karakteristik ekonomi yang sangat berbeda dibanding dua klaster lainnya, ditunjukkan oleh jarak centroid yang jauh di sisi kanan. Klaster 0 dan 2 memiliki distribusi data yang lebih rapat dan saling berdekatan, namun tetap dapat dibedakan oleh posisi centroid masing-masing. Ini mengindikasikan adanya segmentasi wilayah dengan kondisi ekonomi yang mirip namun tetap berbeda secara signifikan.
   
 - Analisis dan Interpretasi Hasil Cluster
-   Setelah melakukan clustering dengan model **KMeans**, kita perlu mengembalikan data yang telah diubah (normalisasi, standarisasi, atau label encoding) ke bentuk aslinya.
+  **Cluster 1 – Daerah Tertinggal**
+  
+  GDP regional sangat rendah (17.29) → kemungkinan daerah miskin secara ekonomi. Pengeluaran per kapita rendah, angka kemiskinan tertinggi (12.54%), usia harapan hidup rendah, dan rata-rata lama sekolah juga rendah. Cluster ini merepresentasikan wilayah tertinggal, dengan kombinasi kesejahteraan rendah dan kualitas hidup buruk. Perlu fokus kebijakan pembangunan ekonomi dasar dan akses pendidikan.
+  
+  **Cluster 2 – Wilayah Maju**
+  
+  GDP regional sangat tinggi (611.26), pengeluaran per kapita tertinggi, dan angka pendidikan paling tinggi. Usia harapan hidup juga paling tinggi (73.63 tahun). Walaupun angka kemiskinan tidak paling rendah, tapi tetap relatif kecil (11.17%).Cluster ini merepresentasikan wilayah maju dan berkembang pesat, dengan tingkat pendidikan dan kesehatan tinggi. Fokus pembangunan bisa diarahkan pada pengembangan inovasi, ekonomi kreatif, dan investasi jangka panjang.
+  
+  **Cluster 3 – Wilayah Berkembang**
+  
+  GDP regional dan pengeluaran per kapita menengah, memiliki tingkat kemiskinan terendah (8.26%) meskipun bukan yang paling kaya. Usia harapan hidup dan rata-rata lama sekolah cukup tinggi. Cluster ini mencerminkan wilayah yang cukup stabil dan berkembang, mungkin dengan program pengentasan kemiskinan yang efektif atau distribusi kesejahteraan yang lebih merata. Bisa jadi model kebijakan untuk cluster 1.
 
----
+- Inverse Data
 
-### 2. Klasifikasi
-
+  Setelah melakukan clustering dengan model **KMeans**, kita perlu mengembalikan data yang telah diubah (normalisasi, standarisasi, atau label encoding) ke bentuk aslinya.
+  
 - Memisahkan fitur (X) dan target (y), hanya digunakan fitur tanpa kolom Cluster, karena Cluster akan dijadikan target (y)
+  
 - Tahapan ecoding, untuk fitur ketegorical agar model hanya menerima input numerik, dan akan menggunakan metode One Hot Encoding untuk menghindari makna urutan
+  
 - Melatih model di `X_train` dan `y_train`, untuk menguji kinerja model pada data yang belum pernah dilihat sebelumnya (X_test, y_test).
+   
 - Membuat daftar nama fitur yang numerik, untuk melihat seperti apa bentuk dan isi data numerik yang akan digunakan dalam proses pelatihan model
+  
 - Standarisasi data pada kolom numerik yang sudah di split, karena akan menggunakan model klasifikasi berbasis jarak seperti seperti KNN, SVM
+  
 - SMOTE,  untuk menyeimbangkan jumlah data antar klaster agar model klasifikasi tidak bias terhadap klaster yang dominan.
-- Training model, setiap model dilatih untuk mengenali pola dalam data agar bisa memprediksi cluster (yang sebelumnya diperoleh dari proses clustering).
-   Terdapat **5 model klasifikasi** yang akan digunakan yakni K-Nearest Neighbor. Decision Tree, Random Forest, Support Vector Machine dan Naive Bayes
+  
+- Training model, setiap model dilatih untuk mengenali pola dalam data agar bisa memprediksi cluster (yang sebelumnya diperoleh dari proses clustering). Masing-masing model dilatih menggunakan data hasil oversampling (X_train_resampled, y_train_resampled).
+
+## Modeling
+
+   Terdapat **5 model klasifikasi** yang akan digunakan yakni K-Nearest Neighbor. Decision Tree, Random Forest, Support Vector Machine dan Naive Bayes. Setiap model dilatih untuk mengenali pola dalam data agar bisa memprediksi cluster (yang sebelumnya diperoleh dari proses clustering). Masing-masing model dilatih menggunakan data hasil oversampling `(X_train_resampled, y_train_resampled)`.
+   
    - Algoritma K-Nearest Neighbors (KNN) adalah metode supervised learning yang digunakan untuk mengatasi masalah klasifikasi dan regresi. Algoritma ini digunakan untuk mengklasifikasikan data baru berdasarkan kedekatan jarak dengan data yang sudah diberi label pada dataset pelatihan. KNN sering digunakan karena kemudahannya dalam pemahaman dan implementasi meskipun pada praktiknya, ia dapat menjadi sangat efektif untuk berbagai masalah klasifikasi.
+
+      Training Model: 
+
+      `knn = KNeighborsClassifier().fit(X_train_resampled, y_train_resampled)`
+
+     Penjelasan:
+
+     K-Nearest Neighbors (KNN) digunakan dengan nilai parameter default, yaitu `n_neighbors=5`, model mempertimbangkan lima tetangga terdekat untuk menentukan kelas dari suatu sampel. 
+     
    - Decision Tree adalah algoritma machine learning yang sering digunakan dalam tugas klasifikasi dan regresi. Struktur dari algoritma ini seperti dengan bentuk pohon dengan setiap cabang mewakili keputusan atau percabangan dari data berdasarkan fitur-fitur yang ada. Struktur dasar dari Decision Tree melibatkan tiga komponen utama, yaitu akar (root node), node (decision node), dan daun (leaf node). Root node mewakili seluruh dataset dan menjadi titik awal untuk pemisahan data. Node-node di sepanjang cabang pohon mewakili keputusan yang diambil berdasarkan fitur tertentu, sedangkan leaf node adalah hasil akhir dari proses klasifikasi atau regresi, seperti label kelas atau nilai numerik.
+
+     Training Model: 
+
+     `dt = DecisionTreeClassifier(random_state=42).fit(X_train_resampled, y_train_resampled)`
+
+     Penjelasan:
+
+     Decision Tree diterapkan dengan parameter `random_state=42` untuk memastikan hasil yang reprodusibel. Decision Tree menggunakan metode pengukuran "impurity" (ketidakmurnian) untuk memutuskan bagaimana membagi data pada tiap node pohon. Parameter criterion mengatur metode mana yang digunakan untuk menilai kualitas suatu split.
+    
    - Random Forest adalah algoritma ensemble learning yang menggabungkan beberapa Decision Tree untuk meningkatkan akurasi prediksi dan mengurangi risiko overfitting. Setiap pohon dalam Random Forest dilatih menggunakan subset acak dari data pelatihan dan subset acak dari fitur yang tersedia. Hasil akhir prediksi ditentukan melalui voting (untuk klasifikasi) atau rata-rata (untuk regresi) dari hasil semua pohon dalam model. Tujuan utama Random Forest adalah mengatasi kelemahan Decision Tree yang cenderung overfit terhadap data pelatihan. Dengan menggabungkan prediksi dari banyak pohon, Random Forest mampu menghasilkan model yang lebih stabil, akurat, dan lebih general terhadap data baru.
+    
+      Training Model: 
+
+      `rf = RandomForestClassifier(random_state=42).fit(X_train_resampled, y_train_resampled)`
+
+     Penjelasan:
+
+     Random Forest menggunakan `random_state=42`, dengan jumlah pohon (`n_estimators`) menggunakan nilai default yaitu 100, serta `criterion='gini'`. 
+     
    - Support vector machine (SVM) adalah salah satu algoritma machine learning yang digunakan untuk klasifikasi dan regresi. Namun, SVM lebih sering digunakan pada masalah klasifikasi. SVM bekerja dengan mencari hyperplane yang optimal untuk memisahkan data ke dalam kelas-kelas yang berbeda. Hyperplane adalah garis (pada data dua dimensi) atau bidang (pada data tiga dimensi) yang memisahkan data dari kelas berbeda. Tujuan SVM adalah menemukan hyperplane yang memaksimalkan margin, yaitu jarak antara hyperplane dan titik data terdekat dari setiap kelas.
+     
+      Training Model: 
+
+      `svm = SVC(random_state=42).fit(X_train_resampled, y_train_resampled)`
+
+     Penjelasan:
+
+     Model Support Vector Machine (SVM) dilatih menggunakan parameter default `kernel='rbf'` dan `C=1.0`, serta random_state=42 untuk memastikan hasil yang konsisten di setiap eksekusi. Kernel 'rbf' dipilih secara default oleh Scikit-learn dan bekerja dengan baik pada data yang tidak linear.
+     
    - Naive Bayes adalah algoritma klasifikasi berbasis probabilitas yang berdasarkan pada Teorema Bayes, dengan asumsi bahwa fitur-fitur dalam data bersifat independen satu sama lain. Nama "naive" (naif) merujuk pada asumsi independensi ini, yang sering kali tidak realistis. Namun, dalam praktiknya dapat menghasilkan model yang efektif. Naive Bayes menggunakan prinsip probabilitas untuk memprediksi kelas dari data baru berdasarkan pengamatan fitur yang ada. Secara matematis, Naive Bayes bekerja dengan menghitung kemungkinan suatu data termasuk dalam kelas tertentu berdasarkan dua faktor: kemungkinan awal dari setiap kelas (probabilitas prior) dan kemungkinan fitur dalam data jika kelas tersebut benar (probabilitas likelihood). Setelah menghitung kemungkinan untuk setiap kelas, model ini memilih kelas dengan kemungkinan tertinggi sebagai hasil klasifikasi.
 
+      Training Model: 
 
-## Evaluation
+      ` nb = GaussianNB().fit(X_train_resampled, y_train_resampled)`
+
+     Penjelasan:
+
+     Naive Bayes yang digunakan adalah GaussianNB, yang merupakan varian Naive Bayes yang sesuai untuk fitur kontinu dan menggunakan parameter default tanpa penyesuaian khusus. 
+     
+## Evaluation Model
    - KNN
 
      Diperoleh Confusion Matrix:
@@ -482,7 +577,7 @@ Berdasarkan data evaluasi yang diperbarui, berikut adalah analisis untuk masing-
 
    K-Nearest Neighbors menunjukkan performa yang sangat tinggi dengan akurasi 100%, serta precision, recall, dan F1-score yang juga sempurna. Hasil ini menunjukkan bahwa model mampu mengklasifikasikan semua data dengan benar, tanpa kesalahan. Namun, nilai yang terlalu sempurna ini kemungkinan besar menunjukkan overfitting, di mana model menghafal pola dalam data latih dan mungkin tidak bekerja sebaik ini pada data baru yang belum pernah dilihat sebelumnya.
 
-3. **Decision Tree (DT)**
+2. **Decision Tree (DT)**
    - **Accuracy**: 100%
    - **Precision**: 100%
    - **Recall**: 100%
@@ -492,7 +587,7 @@ Berdasarkan data evaluasi yang diperbarui, berikut adalah analisis untuk masing-
 
    Decision Tree menunjukkan performa yang sangat tinggi dengan akurasi 100%, serta precision, recall, dan F1-score yang juga sempurna. Hasil ini menunjukkan bahwa model mampu mengklasifikasikan semua data dengan benar, tanpa kesalahan. Namun, nilai yang terlalu sempurna ini kemungkinan besar menunjukkan overfitting, di mana model menghafal pola dalam data latih dan mungkin tidak bekerja sebaik ini pada data baru yang belum pernah dilihat sebelumnya.
 
-5. **Random Forest (RF)**
+3. **Random Forest (RF)**
    - **Accuracy**: 99.02%
    - **Precision**: 95.23%
    - **Recall**: 83.33%
@@ -502,7 +597,7 @@ Berdasarkan data evaluasi yang diperbarui, berikut adalah analisis untuk masing-
 
    Random Forest menunjukkan performa yang sangat tinggi dengan akurasi hampir sempurna (99.02%). Precision-nya (95.23%) juga sangat baik, menunjukkan bahwa model ini sangat akurat dalam memprediksi kasus positif. Recall-nya (83.33%) ini bisa berarti model masih melewatkan beberapa prediksi pada satu atau lebih kelas, meskipun precision-nya bagus.
 
-7. **Support Vector Machine (SVM)**
+4. **Support Vector Machine (SVM)**
    - **Accuracy**: 97.08%
    - **Precision**: 88.88%
    - **Recall**: 98.94%
@@ -512,7 +607,7 @@ Berdasarkan data evaluasi yang diperbarui, berikut adalah analisis untuk masing-
 
    Support Vector Machine menunjukkan performa yang sangat tinggi dengan akurasi hampir sempurna (99.02%). Precision-nya (95.23%) juga sangat baik, menandakan kemampuannya menangkap banyak prediksi benar tanpa banyak false positives. Cocok untuk data yang cukup bersih dan terpisah jelas.
 
-9. **Naive Bayes (NB)**
+5. **Naive Bayes (NB)**
    - **Accuracy**: 62.13%
    - **Precision**: 71.11%
    - **Recall**: 70%
