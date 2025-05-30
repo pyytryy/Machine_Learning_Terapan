@@ -102,7 +102,8 @@ Exploratory Data Analysis (EDA) atau Analisis Data Eksploratif adalah tahap awal
   ```
 
   **Insight:**
-  Diperoleh bahwa dataset `df` merupakan dataset yang berisikan 232725 baris dengan 8 fitur
+  
+  Dataset `df` memiliki jumlah baris sebanyak 232.725 baris dengan 18 fitur
 
   Selanjutnya akan diperiksa data duplikat dengan code:
   
@@ -115,7 +116,8 @@ Exploratory Data Analysis (EDA) atau Analisis Data Eksploratif adalah tahap awal
     np.int64(0)
   ```
   **Insight:**
-    Diperoleh bahwa dataset `df` merupakan dataset yang tidak memiliki data dengan missing value.
+   
+  Diperoleh bahwa dataset `df` merupakan dataset yang tidak memiliki data dengan missing value.
 
   Selanjutnya akan diperiksa data missing value dengan code:
   ```python
@@ -146,7 +148,8 @@ Exploratory Data Analysis (EDA) atau Analisis Data Eksploratif adalah tahap awal
     
 ```
 **Insight:**
-    Diperoleh bahwa terdapat sebanyak 1 missing value pada fitur track_name, sehingga perlu dilakukan penanganan .
+  
+  Diperoleh bahwa terdapat sebanyak 1 missing value pada fitur track_name, sehingga perlu dilakukan penanganan .
 
   Selanjutnya akan diperiksa distribusi data dengan code:
   ```python
@@ -231,57 +234,79 @@ Exploratory Data Analysis (EDA) atau Analisis Data Eksploratif adalah tahap awal
 
 ## Data Preprocessing
 
-Berdasarkan hasil EDA diketahui bahwa dataset yang digunakan terdapat missing value dan genre music yang muncul 2 kali dengan jumlah yang berbeda sehingga perlu ditangani,
+Pada tahap ini, dilakukan pembersihan data menangani missing values, mengatasi kedua nama genre yang mirip, dan memilih fitur yang relevan. Proses ini bertujuan untuk memastikan bahwa data yang digunakan bersih dan siap untuk dianalisis lebih lanjut.
+
 - Mengatasi Missing Value
 
   Pada tahapan ini akan dilakukan penanganan missing value dengan menghapus baris dengan missing value pada fitur `track_name`
+  
 - Menangani 2 genre yang sama
 
    Diperoleh bahwa kedua genre memiliki beberapa entri dengan judul lagu yang sama namun dinyanyikan oleh artis yang berbeda. Hal ini kemungkinan disebabkan oleh perbedaan versi lagu, seperti versi asli dan cover. Oleh karena itu, akan dilakukan generalisasi atau standarisasi nama genre untuk menjaga konsistensi data. Namun, data tidak akan dihapus karena meskipun judul lagunya sama, karena kontennya berbeda, sehingga tetap relevan untuk dianalisis secara terpisah.
 
-
-## Data Preparation
-
 - Mengambil Subset Dataset Secara Acak
 
   Karena ukuran dataset yang sangat besar membutuhkan waktu komputasi yang lama dan ruang penyimpanan yang besar, maka diputuskan untuk mengambil subset data **sebanyak >= 10.000 baris**. Pemilihan subset dilakukan secara acak, kecuali untuk data dengan genre yang jarang muncul, seperti `"A Capella"`, yang akan dipertahankan seluruhnya agar tidak hilang dari analisis. Sementara itu, data dari genre lain akan diambil secara acak hingga total data mencapai batas 10.000 baris.
+  
 - Mengambil fitur yang relevan
 
   Dataset memiliki total 18 fitur, namun tidak semuanya digunakan dalam proses pembuatan sistem rekomendasi. Pada proyek ini, sistem rekomendasi dikembangkan tidak hanya berdasarkan kemiripan 'Penyanyi' dan 'Judul Lagu', tetapi juga **mempertimbangkan atribut-atribut audio dari setiap lagu**. Fitur-fitur yang dipilih mencakup:
+  
   - `track_id`, `artist_name`, `track_name`, `genre`,
   - serta fitur audio seperti `acousticness`, `danceability`, `energy`, `instrumentalness`, `loudness`, `speechiness`, `tempo`, dan `valence`.
     Pemilihan fitur ini bertujuan untuk menghasilkan rekomendasi lagu yang lebih relevan secara musikalitas dan karakteristik audio, bukan sekadar berdasarkan kemiripan teks atau artis.
 
+**Kesimpulan Akhir dari Proses Data Preprocessing**
+
+Dataset telah dibersihkan dari missing value, nama genre yang mirip, dan telah mensortir fitur yang relevan digunakan dan telah disimpan dalam variabel `data`.
+
+
+## Data Preparation
+
+Pada tahap selanjutnya dilakukan normalisasi nilai fitur audio dengan MinmAxScaler, membuat kombinasi nama, TF-IDF vektorizer dan penggabungan
+
 - Normalisasi Fitur Audio
 
   Dalam proyek ini digunakan metode **MinMaxScaler** untuk mengubah semua nilai fitur ke dalam rentang [0, 1], sehingga tidak ada fitur yang mendominasi perhitungan kemiripan.
+  
 - Membuat Kombinasi Nama
 
   Hal ini dilakukan agar TF-IDF dapat menghitung kemiripan berdasarkan dua aspek yakni `artist_name` dan `genre` dan menyimpannya dalam `'combined_text'`
 
-## Model Development Content Based Filtering
-Dalam pengembangan sistem rekomendasi ini, model yang digunakan adalah **Content-Based Filtering**. Pemilihan pendekatan ini didasarkan pada karakteristik dataset yang tidak memuat informasi interaksi pengguna seperti user ID, rating, atau riwayat pemutaran lagu. Oleh karena itu, metode Collaborative Filtering tidak dapat diterapkan secara efektif. Dalam konteks proyek ini, fitur-fitur seperti nama artis, judul lagu, genre, serta karakteristik audio seperti acousticness, danceability, energy, valence, dan tempo digunakan sebagai dasar kemiripan. Selain lebih sederhana untuk diterapkan, pendekatan ini juga memberikan fleksibilitas dalam menyesuaikan bobot atau kombinasi fitur sesuai kebutuhan. Content-Based Filtering sangat cocok untuk sistem rekomendasi berbasis konten yang tidak melibatkan perilaku pengguna secara langsung, serta mempermudah interpretasi hasil karena rekomendasi diberikan berdasarkan kemiripan konten antar lagu. Namun metode ini memiliki kelemahan, adapauun kelemahan utamanya adalah masalah _overspecialization_, di mana sistem hanya merekomendasikan item yang sangat mirip dengan yang sudah dikenal atau disukai sebelumnya, sehingga mengurangi keberagaman rekomendasi. Selain itu, metode ini tidak dapat menangkap preferensi kolektif dari pengguna lain karena tidak melibatkan data komunitas atau perilaku pengguna secara luas. Kekurangan lainnya adalah ketergantungan tinggi terhadap kualitas dan kelengkapan fitur konten.
-
 Saat mencari sebuah lagu, agar sistem akan merekomendasikan lagu-lagu lain yang mirip baik dari segi penyanyi maupun karakteristik audio seperti `acousticness, danceability, energy, valence`, dan `tempo`, maka dilakukan penggabungan dari TF-IDF dan `scaled_audio`
+
 - Dilakukan TF-IDF pada combined_text
+
   ```python
   tf = TfidfVectorizer()
   tfidf_matrix = tf.fit_transform(data['combined_text'])
   ```
+  
 - Dilakukan Penggabungan
+
   ```python
   hybrid_matrix = hstack([tfidf_matrix, scaled_audio])
   ```
+
   Disimpan pada variabel `hybrid_matrix`
 
+
+## **Model Development Content Based Filtering**
+
+Dalam pengembangan sistem rekomendasi ini, model yang digunakan adalah **Content-Based Filtering**. Pemilihan pendekatan ini didasarkan pada karakteristik dataset yang tidak memuat informasi interaksi pengguna seperti user ID, rating, atau riwayat pemutaran lagu. Oleh karena itu, metode Collaborative Filtering tidak dapat diterapkan secara efektif. Dalam konteks proyek ini, fitur-fitur seperti nama artis, judul lagu, genre, serta karakteristik audio seperti acousticness, danceability, energy, valence, dan tempo digunakan sebagai dasar kemiripan. Selain lebih sederhana untuk diterapkan, pendekatan ini juga memberikan fleksibilitas dalam menyesuaikan bobot atau kombinasi fitur sesuai kebutuhan. 
+
+Content-Based Filtering sangat cocok untuk sistem rekomendasi berbasis konten yang tidak melibatkan perilaku pengguna secara langsung, serta mempermudah interpretasi hasil karena rekomendasi diberikan berdasarkan kemiripan konten antar lagu. Namun metode ini memiliki kelemahan, adapauun kelemahan utamanya adalah masalah _overspecialization_, di mana sistem hanya merekomendasikan item yang sangat mirip dengan yang sudah dikenal atau disukai sebelumnya, sehingga mengurangi keberagaman rekomendasi. Selain itu, metode ini tidak dapat menangkap preferensi kolektif dari pengguna lain karena tidak melibatkan data komunitas atau perilaku pengguna secara luas. Kekurangan lainnya adalah ketergantungan tinggi terhadap kualitas dan kelengkapan fitur konten.
+
 - Cosine Similarity
-  Gunakan teknik cosine similarity untuk menemukan lagu-lagu yang mirip secara musikal dengan lagu yang dicari
+
+  Gunakan teknik cosine similarity pada variabel `hybrid_matrix` untuk menemukan lagu-lagu yang mirip secara musikal dengan lagu yang dicari
 
   ```python
   cosine_sim = cosine_similarity(hybrid_matrix)
   cosine_sim
   ```
 - Membuat Dictionary Berisi 10 Lagu Paling Mirip
+
   Menyusun top 10 rekomendasi lagu yang paling mirip untuk setiap lagu berdasarkan skor cosine similarity, dengan memasukkan lagu yang diinginkan juga
 
   ```python
@@ -294,6 +319,7 @@ Saat mencari sebuah lagu, agar sistem akan merekomendasikan lagu-lagu lain yang 
       top_k_sim[key] = similar_items
   ```
 - Mendapatkan Rekomendasi
+
   Memberikan rekomendasi lagu yang mirip dengan lagu input, berdasarkan kemiripan fitur (hasil dari cosine_similarity), dengan referensi pada `track_name` dan `artist_name`.
 
    ```python
@@ -330,11 +356,13 @@ Saat mencari sebuah lagu, agar sistem akan merekomendasikan lagu-lagu lain yang 
   ```
 
   - Melakukan testing pada model
-     ```python
+
+    ```python
     music_recommendations("How to Be Married", "Jackie Kashian")
     ```
 
      Diperoleh output rekomendasi lagu yang similiar dengan How to Be Married:
+
     ```python
     
       track_id	artist_name	track_name	genre	acousticness	danceability	energy	instrumentalness	loudness	speechiness	tempo	valence
@@ -346,34 +374,60 @@ Saat mencari sebuah lagu, agar sistem akan merekomendasikan lagu-lagu lain yang 
 
     ```
 ## Evaluation
+
 - Visual Similarity Inspection
+
   Membandingkan nilai fitur audio (seperti acousticness, danceability, dll) antara lagu input dan lagu hasil rekomendasi. Visualisasi ini memudahkan untuk melihat seberapa mirip pola fitur kedua lagu dalam bentuk garis.
+
+**Cara Kerja Visual Similarity Inspection**
+
+- Ekstraksi Fitur Audio:
+
+  Ambil nilai dari fitur-fitur audio
+  
+- Plotting Nilai Fitur:
+   - Visualisasi berupa plot garis (line plot), sumbu-X merepresentasikan nama fitur audio, dan sumbu-Y adalah nilai normalisasi dari masing-masing fitur. Lagu input digambarkan dengan satu garis, dan setiap lagu rekomendasi digambarkan dengan garis lain
+
+- Perbandingan Visual:
+
+  Semakin mirip bentuk kurva/grafiknya, semakin mirip juga karakteristik musikal dari lagu-lagu tersebut.
+
+  Bentuk output dari hasil rekomendasi terhadap `How to Be Married - Jackie Kashian`
 
   ![image](https://github.com/user-attachments/assets/8b046a7a-9e0c-41ee-aaae-2aa7bd2faefb)
 
   **Salah satu interpretasi dari grafik diatas:**
   
-  Rekomendasi "Life Is Short" cukup mirip dengan lagu How to Be Married karena memiliki kesamaan pada aspek instrumental, keras suara, dan unsur bicara, meskipun sedikit berbeda dalam tempo dan suasana emosional (valence).
+  Rekomendasi "Life Is Short" cukup mirip dengan lagu How to Be Married karena memiliki kesamaan pada aspek `instrumentalness`, `loudness`, dan `speechiness`, meskipun sedikit berbeda dalam `tempo` dan `valence`.
+
 
 ---
 - Menggunakan MAE
   
   **Mean Absolute Error (MAE)** adalah metrik evaluasi yang digunakan untuk mengukur seberapa mirip dua buah entitas berdasarkan fitur numerik mereka. Dalam konteks **sistem rekomendasi musik**, MAE digunakan untuk menghitung rata-rata selisih absolut antara nilai fitur lagu input dan lagu yang direkomendasikan. Fitur-fitur ini bisa berupa:
 
-Rumus MAE:
+**Rumus MAE:**
 
-MAE dihitung menggunakan rumus:
-
-MAE = (1/n) × Σ | yᵢ - ŷᵢ |
+$$
+\text{MAE} = \frac{1}{n} \sum_{i=1}^{n} | y_i - \hat{y}_i |
+$$
 
 **Keterangan:**
-- yᵢ = nilai fitur lagu asli
-- ŷᵢ = nilai fitur lagu hasil rekomendasi
-- n = jumlah fitur audio yang dibandingkan
+- yᵢ: nilai fitur lagu asli
+- ŷᵢ: nilai fitur lagu hasil rekomendasi
+- n: jumlah fitur audio yang dibandingkan
+
+**Dengan cara kerja:**
+
+- Untuk setiap lagu rekomendasi, dibandingkan nilai fitur audionya dengan lagu input.
+
+- Seluruh selisih absolut dihitung untuk fitur seperti acousticness, danceability, energy, valence, dan tempo.
+
+- MAE yang lebih kecil menunjukkan bahwa fitur-fitur lagu tersebut memiliki kriteria yang sangat mirip dengan lagu input.
 
 ---
 
-Interpretasi Nilai MAE
+**Interpretasi Nilai MAE**
 
 | Nilai MAE        | Interpretasi                             |
 |------------------|------------------------------------------|
@@ -393,20 +447,26 @@ Bentuk output dari hasil rekomendasi terhadap `How to Be Married - Jackie Kashia
 | Life Is Short - Sinbad                             | 0.0737 | Cukup mirip           |
 | Toots and Farts - Tommy Ryman                      | 0.0604 | Cukup mirip           |
 
+**Insight:**
+
+- Diperoleh nilai MAE dari kemiripan lagu 'How to Be Married' dengan 'How to Be Married' adalah 0, yang artinya sama persis karena memang membandingkan dengan lagu yang sama
+- Diperoleh nilai MAE dari kemiripan lagu 'How to Be Married' dengan 'Bite Suit' adalah 0.0385, menunjukkan bahwa rekomendasi lagu 'Bite Suit' **sangat mirip** dengan lagu "How to Be Married".
+- Diperoleh nilai MAE dari kemiripan lagu 'How to Be Married' dengan 'Episode 6 "Smokes, Jokes And Froze-Tokes"' - 'T.J. Miller' adalah 0.0739, menunjukkan bahwa rekomendasi lagu 'Episode 6 "Smokes, Jokes And Froze-Tokes"' - 'T.J. Miller' **cukup mirip** dengan lagu "How to Be Married".
+- Diperoleh nilai MAE dari kemiripan lagu 'How to Be Married' dengan 'Toots and Farts' adalah 0.0604, menunjukkan bahwa rekomendasi lagu 'Toots and Farts' **cukup mirip** dengan lagu "How to Be Married".
+- Diperoleh nilai MAE dari kemiripan lagu 'How to Be Married' dengan 'Life Is Short' - 'Sinbad' adalah 0.0737, menunjukkan bahwa rekomendasi lagu 'Life Is Short' - 'Sinbad' **cukup mirip** dengan lagu "How to Be Married".
+
+Diantara kedua bentuk evaluasi, metode evaluasi dengan MAE menunjukkan hasil yang dapat dipercaya dibandingkan hanya dengan melihat visualisasinya.
+
 ## Kesimpulan
 Sistem rekomendasi lagu berbasis konten (Content-Based Filtering) yang telah dibangun memungkinkan pemberian rekomendasi musik secara personal tanpa memerlukan data pengguna lain. Dengan memanfaatkan fitur-fitur audio seperti acousticness, danceability, energy, valence, tempo, dan atribut tambahan seperti genre dan nama artis, sistem ini mengukur kemiripan antar lagu menggunakan teknik seperti cosine similarity dan Mean Absolute Error (MAE). Pendekatan ini efektif dalam menjawab dua tantangan utama:
 
 - Membangun sistem rekomendasi tanpa data pengguna lain dicapai dengan menganalisis karakteristik konten lagu itu sendiri, sehingga sistem tetap dapat bekerja meskipun pengguna belum memiliki histori interaksi.
+- 
 - Memberikan rekomendasi musik yang relevan secara musikal, bahkan untuk lagu yang belum pernah didengarkan pengguna, dilakukan dengan membandingkan lagu yang disukai dengan seluruh koleksi berdasarkan fitur-fitur numerik dan metadata, sehingga hasilnya tetap relevan secara audio maupun genre.
 
 Dengan metode ini, pengguna bisa mendapatkan saran lagu yang memiliki karakteristik musik serupa dengan yang mereka sukai, sekaligus memperluas eksplorasi musik ke artis atau lagu yang sebelumnya belum dikenal.
 
-
 ## **Referensi**
-
-[1]: Kompas.com, "Jumlah pengguna Spotify tumbuh pada 2023, tembus 600 juta," Kompas Tekno, Feb. 12, 2024. [Online]. Available: https://tekno.kompas.com/read/2024/02/12/11030007/jumlah-pengguna-spotify-tumbuh-pada-2023-tembus-600-juta.
-
-[2]: S. Bangera, V. Nagaonkar, A. Tiwari, S. Ansari, and K. Talekar, "Spotify recommendation system," Int. Res. J. Mod. Eng. Technol. Sci., vol. 6, no. 2, Feb. 2024. [Online]. Available: https://www.researchgate.net/publication/381853790_SPOTIFY_RECOMMENDATION_SYSTEM.
 
 [^1]: Kompas.com, "Jumlah pengguna Spotify tumbuh pada 2023, tembus 600 juta," Kompas Tekno, Feb. 12, 2024. [Online]. Available: https://tekno.kompas.com/read/2024/02/12/11030007/jumlah-pengguna-spotify-tumbuh-pada-2023-tembus-600-juta.
 [^2]: S. Bangera, V. Nagaonkar, A. Tiwari, S. Ansari, and K. Talekar, "Spotify recommendation system," Int. Res. J. Mod. Eng. Technol. Sci., vol. 6, no. 2, Feb. 2024. [Online]. Available: https://www.researchgate.net/publication/381853790_SPOTIFY_RECOMMENDATION_SYSTEM.
